@@ -1,10 +1,12 @@
 import React from "react";
+import { Container } from "react-bootstrap";
+import Register from "./components/SigningPage/Register";
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      
-    </div>
+    <Container className="d-flex align-items-center justify-content-center app-style">
+      <Register />
+    </Container>
   );
 }
 
