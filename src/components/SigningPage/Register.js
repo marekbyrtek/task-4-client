@@ -17,14 +17,26 @@ const Register = () => {
             name: nameRef.current.value,
             email: emailRef.current.value,
             password: passwordRef.current.value
-        }
-        console.log(data);
+        };
+        setError("");
         if (passwordRef.current.value !== passwordConfirmRef.current.value) {
             return setError("Passwords are different");
         }
+        setLoading(true);
         Axios.post("http://localhost:3001/register", data)
-            .then(() => console.log("Działa"))
-            .catch(err => console.log(err))
+            .then(() => {
+                console.log("Wysłano");
+                nameRef.current.value = "";
+                emailRef.current.value = "";
+                passwordRef.current.value = "";
+                passwordConfirmRef.current.value = "";
+            })
+            .catch(err => {
+                setError(err.response.data.message);
+                console.log(err);
+            })
+            
+        setLoading(false);
     };
 
     return (
