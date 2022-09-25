@@ -1,0 +1,45 @@
+import React, { useState, useRef } from "react";
+import { Card, Form, Button, Alert } from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
+
+const Login = () => {
+    const emailRef= useRef();
+    const passwordRef = useRef();
+    const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log("dupa");
+    }
+
+    return (
+        <div className="w-100" style={{ maxWidth: "400px" }}>
+            <Card>
+                <Card.Body>
+                    <h2 className="text-center mb-4">Sign in</h2>
+                    {error && <Alert variant="danger">{error}</Alert>}
+                    <Form onSubmit={handleSubmit}>
+                        <Form.Group className="mb-3" id="email">
+                            <Form.Label>Email</Form.Label>
+                            <Form.Control type="email" ref={emailRef} required />
+                        </Form.Group>
+                        <Form.Group className="mb-3" id="password">
+                            <Form.Label>Password</Form.Label>
+                            <Form.Control type="password" ref={passwordRef} required />
+                        </Form.Group>
+                        <Button disabled={loading} variant="outline-primary" className="w-100" type="submit">
+                            Sign in
+                        </Button>
+                    </Form>
+                </Card.Body>
+            </Card>
+            <div className="w=100 text-center mt-2">
+                Sign up <Link to="/register">Register</Link>
+            </div>
+        </div>
+    )   
+}
+
+export default Login;

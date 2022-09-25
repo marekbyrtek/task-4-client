@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { Form, Button, Card, Alert } from "react-bootstrap";
-// import { Link, useHistory } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Axios from "axios";
 
 const Register = () => {
@@ -10,6 +10,7 @@ const Register = () => {
     const passwordConfirmRef = useRef();
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -25,11 +26,7 @@ const Register = () => {
         setLoading(true);
         Axios.post("http://localhost:3001/register", data)
             .then(() => {
-                console.log("Wysłano");
-                nameRef.current.value = "";
-                emailRef.current.value = "";
-                passwordRef.current.value = "";
-                passwordConfirmRef.current.value = "";
+                navigate("/");
             })
             .catch(err => {
                 setError(err.response.data.message);
@@ -43,7 +40,7 @@ const Register = () => {
         <div className="w-100" style={{ maxWidth: "400px" }}>
             <Card>
                 <Card.Body>
-                    <h2 className="text-center mb-4">Zarejestruj się</h2>
+                    <h2 className="text-center mb-4">Sign up</h2>
                     {error && <Alert variant="danger">{error}</Alert>}
                     <Form onSubmit={handleSubmit}>
                         <Form.Group className="mb-3" id="name">
@@ -55,22 +52,22 @@ const Register = () => {
                             <Form.Control type="email" ref={emailRef} required />
                         </Form.Group>
                         <Form.Group className="mb-3" id="password">
-                            <Form.Label>Hasło</Form.Label>
+                            <Form.Label>Password</Form.Label>
                             <Form.Control type="password" ref={passwordRef} required />
                         </Form.Group>
                         <Form.Group className="mb-3" id="password-confirm">
-                            <Form.Label>Potwierdź hasło</Form.Label>
+                            <Form.Label>Password confirm</Form.Label>
                             <Form.Control type="password" ref={passwordConfirmRef} required />
                         </Form.Group>
                         <Button disabled={loading} variant="outline-primary" className="w-100" type="submit">
-                            Zarejestruj się
+                            Register
                         </Button>
                     </Form>
                 </Card.Body>
             </Card>
-            {/* <div className="w=100 text-center mt-2">
-                Masz już konto? <Link to="/login">Zaloguj się</Link>
-            </div> */}
+            <div className="w=100 text-center mt-2">
+                Already have an account <Link to="/login">Sign in</Link>
+            </div>
         </div>
     )
 }
