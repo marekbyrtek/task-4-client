@@ -39,7 +39,7 @@ const Toolbar = ({ users }) => {
                 id: el._id,
                 status: el.status
             }
-            Axios.put("http://localhost:3001/activate", data)
+            Axios.put("https://task-4-backend.herokuapp.com/activate", data)
                 .then(() => setCounter((prev) => prev + 1))
                 .catch((err) => {
                     console.log(err);
@@ -56,7 +56,7 @@ const Toolbar = ({ users }) => {
             const data = {
                 id: el._id
             }
-            Axios.post("http://localhost:3001/delete", data)
+            Axios.post("https://task-4-backend.herokuapp.com/delete", data)
                 .then(() => {console.log("User deleted")})
                 .then(() => setCounter((prev) => prev + 1))
                 .catch((err) => {

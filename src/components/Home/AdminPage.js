@@ -17,7 +17,7 @@ const AdminPage = () => {
         if (!localStorage.getItem("accessToken")) navigate("/login");
         
         Axios
-      .get("http://localhost:3001/auth", {
+      .get("https://task-4-backend.herokuapp.com/auth", {
         headers: {
           accessToken: localStorage.getItem("accessToken"),
         },
@@ -36,7 +36,7 @@ const AdminPage = () => {
     }, [])
     
     useEffect(() => {
-        Axios.get("http://localhost:3001/users").then((res) => {
+        Axios.get("https://task-4-backend.herokuapp.com/users").then((res) => {
             setListOfUsers(res.data);
         })
     }, [counter]);

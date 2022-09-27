@@ -24,7 +24,7 @@ const Register = () => {
             return setError("Passwords are different");
         }
         setLoading(true);
-        Axios.post("http://localhost:3001/register", data)
+        Axios.post("https://task-4-backend.herokuapp.com/register", data)
             .then(() => {
                 navigate("/login");
             })
