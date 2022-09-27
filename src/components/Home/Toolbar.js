@@ -22,7 +22,7 @@ const Toolbar = ({ users }) => {
                 id: el._id,
                 status: el.status
             }
-            Axios.put("http://localhost:3001/block", data)
+            Axios.put("https://task-4-backend.herokuapp.com/block", data)
                 .then(() => setCounter((prev) => prev + 1))
                 .catch((err) => {
                     console.log(err);
