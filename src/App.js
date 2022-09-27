@@ -12,7 +12,6 @@ const App = () => {
     id: 0,
     status: false
   });
-  console.log("dupa")
 
   return (
     <Container className="d-flex align-items-center justify-content-center app-style">
