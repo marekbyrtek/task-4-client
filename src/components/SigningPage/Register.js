@@ -26,7 +26,7 @@ const Register = () => {
         setLoading(true);
         Axios.post("http://localhost:3001/register", data)
             .then(() => {
-                navigate("/");
+                navigate("/login");
             })
             .catch(err => {
                 setError(err.response.data.message);

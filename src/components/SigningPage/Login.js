@@ -1,17 +1,40 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useContext } from "react";
 import { Card, Form, Button, Alert } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
+import Axios from "axios";
+import { AuthContext } from "../../AuthContext";
 
 const Login = () => {
     const emailRef= useRef();
     const passwordRef = useRef();
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
+    const { setAuthState } = useContext(AuthContext);
     const navigate = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log("dupa");
+        const data = {
+            email: emailRef.current.value,
+            password: passwordRef.current.value
+        };
+        setError("");
+        setLoading(true);
+        Axios.post("http://localhost:3001/login", data)
+            .then((resp) => {
+                localStorage.setItem("accessToken", resp.data.token);
+                setAuthState({
+                    email: resp.data.user.email,
+                    id: resp.data.user._id,
+                    status: true
+                });
+                navigate("/");
+            })
+            .catch(err => {
+                setError(err.response.data.message);
+                console.log(err)
+            })
+        setLoading(false);
     }
 
     return (

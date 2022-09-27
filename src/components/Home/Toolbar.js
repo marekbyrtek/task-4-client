@@ -2,21 +2,27 @@ import React, { useState, useContext } from "react";
 import Axios from "axios";
 import { Button } from "react-bootstrap";
 import { CounterContext } from "./Context";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash, faUnlock } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../AuthContext";
 
 const Toolbar = ({ users }) => {
     const [loading, setLoading] = useState(false);
     const setCounter = useContext(CounterContext);
+    const { authState, setAuthState } = useContext(AuthContext);
+    const navigate = useNavigate();
 
     const handleBlock = (e) => {
         e.preventDefault();
         setLoading(true);
         users.map((el) => {
+            if (el._id == authState.id) return alert("Can't block loged user");
             const data = {
                 id: el._id,
                 status: el.status
             }
             Axios.put("http://localhost:3001/block", data)
-                .then(() => console.log("Zmieniono"))
                 .then(() => setCounter((prev) => prev + 1))
                 .catch((err) => {
                     console.log(err);
@@ -34,7 +40,6 @@ const Toolbar = ({ users }) => {
                 status: el.status
             }
             Axios.put("http://localhost:3001/activate", data)
-                .then(() => console.log("Zmieniono"))
                 .then(() => setCounter((prev) => prev + 1))
                 .catch((err) => {
                     console.log(err);
@@ -47,6 +52,7 @@ const Toolbar = ({ users }) => {
         e.preventDefault();
         setLoading(true);
         users.map((el) => {
+            if (el._id == authState.id) return alert("Can't delete loged user");
             const data = {
                 id: el._id
             }
@@ -61,11 +67,23 @@ const Toolbar = ({ users }) => {
         setLoading(false);
     }
 
+    const handleLogout = (e) => {
+        e.preventDefault();
+        localStorage.removeItem("accessToken");
+        setAuthState({
+            email: "",
+            id: 0,
+            status: false
+        })
+        navigate("/login");
+    }
+
     return (
-        <div className="mb-2">
+        <div className="mb-2 d-flex align-items-center w-100">
             <Button variant="danger" onClick={handleBlock} disabled={loading}>Block</Button>
-            <Button className="m-3" onClick={handleUnblock} disabled={loading}>Unblock</Button>
-            <Button onClick={handleDelete} disabled={loading}>Delete</Button>
+            <Button className="m-3" onClick={handleUnblock} disabled={loading}><FontAwesomeIcon icon={faUnlock} /></Button>
+            <Button onClick={handleDelete} disabled={loading}><FontAwesomeIcon icon={faTrash} /></Button>
+            <Button onClick={handleLogout} disabled={loading} variant="outline-primary" style={{marginLeft: "auto"}}>Log out</Button>
         </div>
     )
 }

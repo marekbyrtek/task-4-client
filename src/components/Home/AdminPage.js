@@ -1,13 +1,39 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Axios from "axios";
 import { Table, Container } from "react-bootstrap";
 import Toolbar from "./Toolbar";
 import { CounterContext } from "./Context";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../AuthContext";
 
 const AdminPage = () => {
     const [listOfUsers, setListOfUsers] = useState([]);
     const [listOfChecked, setListOfChecked] = useState([]);
     const [counter, setCounter] = useState(0);
+    const { authState, setAuthState } = useContext(AuthContext);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!localStorage.getItem("accessToken")) navigate("/login");
+        
+        Axios
+      .get("http://localhost:3001/auth", {
+        headers: {
+          accessToken: localStorage.getItem("accessToken"),
+        },
+      })
+      .then((response) => {
+        if (response.data.error) {
+          setAuthState({ ...authState, status: false });
+        } else {
+          setAuthState({
+            email: response.data.user.email,
+            id: response.data.user.id,
+            status: true
+          });
+        }
+      });
+    }, [])
     
     useEffect(() => {
         Axios.get("http://localhost:3001/users").then((res) => {
